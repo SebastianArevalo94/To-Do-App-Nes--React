@@ -1,5 +1,5 @@
 import "../styles/Main.css";
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import TaskList from "./TaskList";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";

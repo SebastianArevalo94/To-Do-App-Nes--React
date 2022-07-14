@@ -4,8 +4,6 @@ import {checkTask} from "../redux/taskSlice";
 import click from "../assets/sounds/click.mp3";
 
 const TaskList = () => {
-	const [allTasks, setAllTasks] = useState([]);
-	const [tasksState, setTasksState] = useState([]);
 	const dispatch = useDispatch();
 	const state = useSelector(state => state.tasks);
 	const [filterState, setFilterState] = useState(null);
