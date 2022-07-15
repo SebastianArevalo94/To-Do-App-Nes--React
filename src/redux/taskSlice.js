@@ -1,4 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
+import {addTaskLS, editTasksLS} from '../helpers/localStorage';
 
 const initialState = ({
 	tasks: []
@@ -14,7 +15,8 @@ export const taskSlice = createSlice ({
 	reducers :{
 		addTask: (state, action) => {
 			action.payload.name = firstLetterCapital(action.payload.name);
-			state.tasks.push(action.payload)
+			state.tasks.push(action.payload);
+			addTaskLS(action.payload)
 		},
 		deleteAll: (state, action) => {
 			state.tasks = []
@@ -24,10 +26,29 @@ export const taskSlice = createSlice ({
 			if(searchTask){
 				searchTask.completed = !searchTask.completed;
 			};
+			editTasksLS(state.tasks);
+		},
+		editTask: (state, action) => {
+			const {id, name} = action.payload;
+			const taskFind = state.tasks.find(task => task.id === id);
+			if(taskFind){
+				taskFind.name = firstLetterCapital(name);
+			};
+			editTasksLS(state.tasks);
+		},
+		deleteTask: (state, action) => {
+			const taskFind = state.tasks.find(task => task.id === action.payload);
+			if(taskFind){
+				state.tasks.splice(state.tasks.indexOf(taskFind), 1)
+			};
+			editTasksLS(state.tasks);
+		},
+		setTasksLS: (state, action) => {
+			state.tasks = action.payload;
 		}
 	}
 });
 
-export const {addTask, deleteAll, checkTask} = taskSlice.actions;
+export const {addTask, deleteAll, checkTask, editTask, deleteTask, setTasksLS} = taskSlice.actions;
 
 export default taskSlice.reducer;

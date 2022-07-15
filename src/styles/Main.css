@@ -22,6 +22,10 @@ html, body, #root, #root>div {
   height: 100vh;
 }
 
+.textCenter {
+  text-align: center;
+}
+
 .global{
 /*  width: 65%;
   margin: 5% auto;*/
@@ -94,12 +98,12 @@ html, body, #root, #root>div {
 
 .addBtn{
   margin: auto;
-  width: 230px;
+  width: 210px;
 }
 
 .cleanBtn{
   margin: auto;
-  width: 230px;
+  width: 210px;
 }
 
 .taskDiv {
@@ -112,21 +116,23 @@ html, body, #root, #root>div {
 .taskFilter {
   display: flex;
   gap: 15px;
-  margin-bottom: 15px;
+  margin: 0 auto 10px auto;
 }
 
 .taskFilterDark {
   display: flex;
   gap: 15px;
   color: #fff;
+  margin: 0 auto 10px auto;
 }
 
 .taskList {
   display: flex;
-  flex-direction: column;
   gap: 8px;
-  width: 95%;
+  width: 700px;
+  flex-wrap: wrap;
   margin: auto;
+  justify-content: center;
 }
 
 .active {
@@ -138,15 +144,47 @@ html, body, #root, #root>div {
 }
 
 .onlyTask {
-width: 100%;
+width: 320px;
+  position: relative;
 /*position: relative;*/
 /*display: flex;
 flex-direction: column;*/
 }
 
+.taskLabel {
+  position: relative;
+}
+
+
 .taskNum{
  margin-bottom: 5px;
  background-color: red;
+}
+
+.taskActions {
+  position: absolute;
+  display: flex;
+  gap: 7px;
+  bottom: 65%;
+  left: 75%;
+/*  bottom: 75%;
+  left: 500%;*/
+}
+
+.confirm-container {
+  display: flex;
+  justify-content: center;
+}
+
+.edit-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.edit-btn {
+  display: flex;
+  margin: 15px auto;
+  gap: 15px;
 }
 
 .timeContainer {
@@ -157,6 +195,11 @@ flex-direction: column;*/
 
 .taskTime {
 margin-left: auto;
+}
+
+.dialog-dark {
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 .invisible {
@@ -185,11 +228,12 @@ margin-left: auto;
   .alert {
     margin: 50% auto;
   }
-  .addBtn {
-    width: 100%;
+  .taskList{
+    flex-direction: column;
+    width: 400px;
   }
-  .cleanBtn {
-    width: 100%; 
+  .onlyTask {
+    width: 100%;
   }
 };
 
