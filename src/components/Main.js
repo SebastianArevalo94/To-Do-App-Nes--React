@@ -19,10 +19,11 @@ const Main = () => {
     } else {
       setTheme(theme);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const initialState = {
-    name: "",
+    name: "", 
     completed: false,
     time: new Date().toLocaleTimeString(),
   };
@@ -56,9 +57,9 @@ const Main = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e) => { 
     e.preventDefault();
-    if (task.name !== "") {
+    if (task.name !== "") { 
       dispatch(addTask({ ...task, id: taskId }));
       setTaskId(taskId + 1);
       setTask(initialState);
