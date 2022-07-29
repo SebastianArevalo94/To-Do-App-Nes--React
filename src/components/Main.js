@@ -5,6 +5,8 @@ import { useSelector } from "react-redux";
 import { addTask, deleteAll, setTasksLS } from "../redux/taskSlice";
 import click from "../assets/sounds/click.mp3";
 import { getLSData, cleanLS } from "../helpers/localStorage";
+import sun from "../assets/icons/sun-symbol.png";
+import moon from "../assets/icons/moon-symbol.png";
 
 const Main = () => {
   const [taskId, setTaskId] = useState(1);
@@ -108,15 +110,10 @@ const Main = () => {
     let taskFilter = document.querySelector("#taskFilter");
     let allTasks = document.querySelector("#allTasks");
     let icon = document.querySelector("#themeImg");
-    let icons = {
-      moon: "https://img.icons8.com/ios-glyphs/60/000000/moon-symbol.png",
-      sun: "https://img.icons8.com/ios-glyphs/60/ffffff/sun--v1.png",
-    };
-    //blanco a negro */}
+
     if (theme === "dark") {
-      // ojo aqui
       localStorage.setItem("theme", theme);
-      icon.src = icons.sun;
+      icon.src = sun
       body.className = "darkBody";
       titleApp.className = "titleAppDark";
       addTaskContainer.className = "addTask nes-container dark addTaskDark";
@@ -139,7 +136,7 @@ const Main = () => {
     } else {
       body.className = "lightBody";
       localStorage.setItem("theme", "light");
-      icon.src = icons.moon;
+      icon.src = moon;
       body.className = "lightBody";
       titleApp.className = "titleAppLight";
       addTaskContainer.className = "addTask nes-container";
