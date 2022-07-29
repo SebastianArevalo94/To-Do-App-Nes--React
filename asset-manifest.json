@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/To-Do-App-Nes--React/static/css/main.d859f466.css",
+    "main.js": "/To-Do-App-Nes--React/static/js/main.a59c2431.js",
+    "static/media/click.mp3": "/To-Do-App-Nes--React/static/media/click.4cb6290529156919c341.mp3",
+    "index.html": "/To-Do-App-Nes--React/index.html",
+    "main.d859f466.css.map": "/To-Do-App-Nes--React/static/css/main.d859f466.css.map",
+    "main.a59c2431.js.map": "/To-Do-App-Nes--React/static/js/main.a59c2431.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d859f466.css",
+    "static/js/main.a59c2431.js"
+  ]
+}
