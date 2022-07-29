@@ -7,14 +7,12 @@
   font-family: 'Press Start 2P', cursive;
 }
 
-html, body, #root, #root>div {
-  height: 100%
-}
-
-
 .darkBody{
   background-color: #000;
-  height: 100vh;
+}
+
+.full {
+  height: 100%;
 }
 
 .lightBody {
@@ -76,10 +74,6 @@ html, body, #root, #root>div {
  font-size: 45px;
 }
 
-.changeTheme{
-/*  margin-top: 3px;*/
-}
-
 .themeImg{
   width: 60px;
   height: 60px;
@@ -87,6 +81,12 @@ html, body, #root, #root>div {
 
 .nes-input {
   outline: none;
+}
+
+.errorText {
+  margin-top: 15px;
+  text-align: center;
+  display: none;
 }
 
 .addBtnDiv{
@@ -220,10 +220,6 @@ margin-left: auto;
   }
   .changeTheme {
     margin: -20px auto;
-  }
-  .addTask {
-    margin: 15px 20px;
-    /*width: 60%;*/
   }
   .alert {
     margin: 50% auto;

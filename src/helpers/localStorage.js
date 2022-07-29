@@ -1,6 +1,3 @@
-import {useDispatch} from 'react';
-import {setTasksLS} from '../redux/taskSlice';
-
 export const getLSData = () => {
 	let ls = JSON.parse(localStorage.getItem('tasks'));
 	if(ls===null){

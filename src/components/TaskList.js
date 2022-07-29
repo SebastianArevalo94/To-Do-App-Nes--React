@@ -2,7 +2,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import { checkTask } from "../redux/taskSlice";
 import click from "../assets/sounds/click.mp3";
-import { Link, useParams } from "react-router-dom";
 import { editTask, deleteTask } from "../redux/taskSlice";
 
 const TaskList = () => {
@@ -14,7 +13,6 @@ const TaskList = () => {
     completed: false,
     time: new Date().toLocaleTimeString(),
   });
-  const [idTaskDelete, setIdTaskDelete] = useState();
 
   const handleCheck = (id) => {
     dispatch(checkTask(id));
@@ -64,37 +62,39 @@ const TaskList = () => {
   const setActive = (which) => {
     let body = document.querySelector("#body");
 
-    if (which === "allTasks") {
-      setFilterState(null);
-      let allTasksHTML = document.querySelector("#allTasks");
+    if (state.tasks.length >= 1) {
+      if (which === "allTasks") {
+        setFilterState(null);
+        let allTasksHTML = document.querySelector("#allTasks");
 
-      body.className === "lightBody"
-        ? (allTasksHTML.className = "allTasks active")
-        : (allTasksHTML.className = "allTasks activeDark");
+        body.className === "lightBody"
+          ? (allTasksHTML.className = "allTasks active")
+          : (allTasksHTML.className = "allTasks activeDark");
 
-      document.querySelector("#doneTasks").className = "doneTasks";
+        document.querySelector("#doneTasks").className = "doneTasks";
 
-      document.querySelector("#undoneTasks").className = "undoneTasks";
-    } else if (which === "doneTasks") {
-      let doneTasksHTML = document.querySelector("#doneTasks");
-      setFilterState(true);
-      body.className === "lightBody"
-        ? (doneTasksHTML.className = "doneTasks active")
-        : (doneTasksHTML.className = "doneTasks activeDark");
+        document.querySelector("#undoneTasks").className = "undoneTasks";
+      } else if (which === "doneTasks") {
+        let doneTasksHTML = document.querySelector("#doneTasks");
+        setFilterState(true);
+        body.className === "lightBody"
+          ? (doneTasksHTML.className = "doneTasks active")
+          : (doneTasksHTML.className = "doneTasks activeDark");
 
-      document.querySelector("#allTasks").className = "allTasks";
+        document.querySelector("#allTasks").className = "allTasks";
 
-      document.querySelector("#undoneTasks").className = "undoneTasks";
-    } else if (which === "undoneTasks") {
-      let undoneTasksHTML = document.querySelector("#undoneTasks");
-      setFilterState(false);
-      body.className === "lightBody"
-        ? (undoneTasksHTML.className = "undoneTasks active")
-        : (undoneTasksHTML.className = "undoneTasks activeDark");
+        document.querySelector("#undoneTasks").className = "undoneTasks";
+      } else if (which === "undoneTasks") {
+        let undoneTasksHTML = document.querySelector("#undoneTasks");
+        setFilterState(false);
+        body.className === "lightBody"
+          ? (undoneTasksHTML.className = "undoneTasks active")
+          : (undoneTasksHTML.className = "undoneTasks activeDark");
 
-      document.querySelector("#allTasks").className = "allTasks";
+        document.querySelector("#allTasks").className = "allTasks";
 
-      document.querySelector("#doneTasks").className = "doneTasks";
+        document.querySelector("#doneTasks").className = "doneTasks";
+      }
     }
   };
 
@@ -169,7 +169,9 @@ const TaskList = () => {
           className="allTasks active"
           onClick={() => {
             setActive("allTasks");
-            playClick();
+            if (state.tasks.length >= 1) {
+              playClick();
+            }
           }}
         >
           Todas
@@ -179,7 +181,9 @@ const TaskList = () => {
           className="doneTasks"
           onClick={() => {
             setActive("doneTasks");
-            playClick();
+            if (state.tasks.length >= 1) {
+              playClick();
+            }
           }}
         >
           Hechas
@@ -189,7 +193,9 @@ const TaskList = () => {
           className="undoneTasks"
           onClick={() => {
             setActive("undoneTasks");
-            playClick();
+            if (state.tasks.length >= 1) {
+              playClick();
+            }
           }}
         >
           Sin hacer

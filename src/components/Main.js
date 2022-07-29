@@ -10,10 +10,21 @@ const Main = () => {
   const [taskId, setTaskId] = useState(1);
   const dispatch = useDispatch();
   const tasks = useSelector((state) => state.tasks);
+  const [fixHeight, setFixHeight] = useState(0);
+  const [initialHeight, setInitialHeight] = useState();
+  const [btnDisabled, setBtnDisabled] = useState(true);
+  const [cleanDisabled, setCleanDisabled] = useState(true);
+  const [errorInfo, setErrorInfo] = useState("");
 
   useEffect(() => {
     let theme = localStorage.getItem("theme");
+    let body = document.querySelector("#body");
+    body.style.height = `${document.documentElement.scrollHeight}px`;
+    setInitialHeight(`${document.documentElement.scrollHeight}px`);
     dispatch(setTasksLS(getLSData()));
+    setCleanDisabled(
+      JSON.parse(localStorage.getItem("tasks")).length > 0 ? false : true
+    );
     if (theme === null) {
       localStorage.setItem("theme", "light");
     } else {
@@ -23,7 +34,7 @@ const Main = () => {
   }, []);
 
   const initialState = {
-    name: "", 
+    name: "",
     completed: false,
     time: new Date().toLocaleTimeString(),
   };
@@ -31,15 +42,17 @@ const Main = () => {
   const [task, setTask] = useState(initialState);
 
   const playClick = () => {
-    let clickSound = new Audio(click);
+    const clickSound = new Audio(click);
     clickSound.play();
   };
-
   const clean = () => {
     dispatch(deleteAll());
     cleanLS();
     setTaskId(1);
     cancel();
+    setCleanDisabled(!cleanDisabled);
+    let body = document.querySelector("#body");
+    body.style.height = initialHeight;
   };
 
   const showConfirm = () => {
@@ -51,23 +64,41 @@ const Main = () => {
   };
 
   const handleChange = (e) => {
+    const text = document.querySelector("#errorText");
+    if (e.target.value === "") {
+      setBtnDisabled(true);
+      text.style.display = "block";
+      setErrorInfo("Escribe una tarea.");
+    } else if (e.target.value.length < 4) {
+      setBtnDisabled(true);
+      text.style.display = "block";
+      setErrorInfo("Escribe minimo 4 letras.");
+    } else {
+      text.style.display = "none";
+      setBtnDisabled(false);
+    }
     setTask({
       ...task,
       [e.target.name]: e.target.value,
     });
   };
-
-  const handleSubmit = (e) => { 
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (task.name !== "") { 
+    if (!btnDisabled) {
+      setFixHeight(fixHeight + 1);
+    }
+    if (fixHeight === 4) {
+      const body = document.querySelector("#body");
+      body.removeAttribute("style");
+    }
+    if (task.name !== "" && task.name.length >= 4) {
       dispatch(addTask({ ...task, id: taskId }));
+      setCleanDisabled(false);
       setTaskId(taskId + 1);
       setTask(initialState);
-    } else {
-      document.getElementById("dialog-default").showModal();
     }
+    setBtnDisabled(true);
   };
-
   const setTheme = (theme) => {
     let body = document.querySelector("#body");
     let titleApp = document.querySelector("#titleApp");
@@ -75,6 +106,7 @@ const Main = () => {
     let label = document.querySelector("#taskLabel");
     let input = document.querySelector("#taskInput");
     let taskFilter = document.querySelector("#taskFilter");
+    let allTasks = document.querySelector("#allTasks");
     let icon = document.querySelector("#themeImg");
     let icons = {
       moon: "https://img.icons8.com/ios-glyphs/60/000000/moon-symbol.png",
@@ -89,6 +121,7 @@ const Main = () => {
       titleApp.className = "titleAppDark";
       addTaskContainer.className = "addTask nes-container dark addTaskDark";
       taskFilter.className = "taskFilterDark";
+      allTasks.className = "allTasks active";
       input.className = "nes-input is-dark";
       label.style.color = "#fff";
       if (tasks.length !== 0) {
@@ -105,16 +138,13 @@ const Main = () => {
       }
     } else {
       body.className = "lightBody";
-      // ojo aqui
       localStorage.setItem("theme", "light");
       icon.src = icons.moon;
       body.className = "lightBody";
       titleApp.className = "titleAppLight";
       addTaskContainer.className = "addTask nes-container";
       taskFilter.className = "taskFilter";
-      // allTasks.className = 'allTasks active'; }
-      // doneTasks.className = 'doneTasks active'; }
-      // undoneTasks.className = 'undoneTasks active'; }
+      allTasks.className = "allTasks activeDark";
       input.className = "nes-input";
       label.style.color = "#000";
       if (tasks.length !== 0) {
@@ -139,7 +169,7 @@ const Main = () => {
     let label = document.querySelector("#taskLabel");
     let input = document.querySelector("#taskInput");
     let taskFilter = document.querySelector("#taskFilter");
-
+    let alertDeleteAll = document.querySelector("#delete-all");
     let icon = document.querySelector("#themeImg");
     let icons = {
       moon: "https://img.icons8.com/ios-glyphs/60/000000/moon-symbol.png",
@@ -153,6 +183,7 @@ const Main = () => {
       titleApp.className = "titleAppDark";
       addTaskContainer.className = "addTask nes-container dark addTaskDark";
       taskFilter.className = "taskFilterDark";
+      alertDeleteAll.className = "nes-dialog alert is-dark dialog-dark";
       input.className = "nes-input is-dark";
       label.style.color = "#fff";
       if (tasks.length !== 0) {
@@ -175,6 +206,7 @@ const Main = () => {
       titleApp.className = "titleAppLight";
       addTaskContainer.className = "addTask nes-container";
       taskFilter.className = "taskFilter";
+      alertDeleteAll.className = "nes-dialog alert";
       // allTasks.className = 'allTasks active'; }
       // doneTasks.className = 'doneTasks active'; }
       // undoneTasks.className = 'undoneTasks active'; }
@@ -194,7 +226,55 @@ const Main = () => {
       }
     }
   };
-
+  const Alerts = () => {
+    return (
+      <>
+        <section className="alertSection">
+          <dialog
+            className={
+              localStorage.getItem("theme") === "light"
+                ? "nes-dialog alert"
+                : "nes-dialog alert is-dark dialog-dark"
+            }
+            id="delete-all"
+          >
+            <div method="dialog">
+              <p className="nes-text is-warning">
+                {tasks.tasks.length > 1
+                  ? "¿Quieres elminar todas las tareas?"
+                  : "¿Quieres eliminar la tarea?"}
+              </p>
+              <div className="edit-container nes-field">
+                <label className="textCenter" htmlFor="name_field">
+                  {tasks.tasks.length > 1
+                    ? `Se eliminaran las ${tasks.tasks.length} tareas!`
+                    : `Se eliminara la tarea!`}
+                </label>
+                <menu className="dialog-menu edit-btn">
+                  <button
+                    onMouseDown={playClick}
+                    type="submit"
+                    className="nes-btn is-success"
+                    onClick={clean}
+                  >
+                    Eliminar
+                  </button>
+                  <button
+                    onMouseDown={playClick}
+                    onClick={cancel}
+                    type="button"
+                    className="nes-btn is-error"
+                  >
+                    Cancelar
+                  </button>
+                </menu>
+              </div>
+            </div>
+          </dialog>
+        </section>
+      </>
+    );
+  };
   return (
     <div id="body" className="lightBody">
       <div className="global">
@@ -228,85 +308,49 @@ const Main = () => {
                 value={task.name}
               />
             </div>
+            <p id="errorText" className="nes-text is-error errorText">
+              {errorInfo}
+            </p>
             <div className="addBtnDiv">
               <button
                 type="submit"
-                onMouseDown={playClick}
-                onClick={addTask}
-                className="addBtn nes-btn is-success"
+                onMouseDown={() => {
+                  if (task.name !== "" && task.name.length >= 4) {
+                    playClick();
+                  }
+                }}
+                className={
+                  btnDisabled
+                    ? "addBtn nes-btn is-success is-disabled"
+                    : "addBtn nes-btn is-success"
+                }
               >
                 Agregar
               </button>
               <button
                 type="button"
-                onMouseDown={playClick}
-                onClick={showConfirm}
-                className="cleanBtn nes-btn is-error"
+                onMouseDown={() => {
+                  if (tasks.tasks.length >= 1) {
+                    playClick();
+                  }
+                }}
+                onClick={() => {
+                  if (!cleanDisabled) {
+                    showConfirm();
+                  }
+                }}
+                className={
+                  cleanDisabled
+                    ? "cleanBtn nes-btn is-error is-disabled"
+                    : "cleanBtn nes-btn is-error"
+                }
               >
-                Vaciar
+                Limpiar
               </button>
             </div>
           </form>
         </div>
-        <section className="alertSection">
-          <dialog
-            className={
-              localStorage.getItem("theme") === "light"
-                ? "nes-dialog alert"
-                : "nes-dialog alert is-dark dialog-dark"
-            }
-            id="dialog-default"
-          >
-            <form method="dialog">
-              <p className="nes-text is-error textCenter">Error</p>
-              <p>Debes agregar un nombre a la tarea.</p>
-              <menu className="dialog-menu">
-                <div className="confirm-container">
-                  <button onMouseDown={playClick} className="nes-btn is-error">
-                    Confirmar
-                  </button>
-                </div>
-              </menu>
-            </form>
-          </dialog>
-        </section>
-        <section className="alertSection">
-          <dialog
-            className={
-              localStorage.getItem("theme") === "light"
-                ? "nes-dialog alert"
-                : "nes-dialog alert is-dark dialog-dark"
-            }
-            id="delete-all"
-          >
-            <div method="dialog">
-              <p className="nes-text is-warning">¿Quieres todas las tareas?</p>
-              <div className="edit-container nes-field">
-                <label className="textCenter" htmlFor="name_field">
-                  Eliminaras las {tasks.tasks.length} tareas
-                </label>
-                <menu className="dialog-menu edit-btn">
-                  <button
-                    onMouseDown={playClick}
-                    type="submit"
-                    className="nes-btn is-success"
-                    onClick={clean}
-                  >
-                    Eliminar
-                  </button>
-                  <button
-                    onMouseDown={playClick}
-                    onClick={cancel}
-                    type="button"
-                    className="nes-btn is-error"
-                  >
-                    Cancelar
-                  </button>
-                </menu>
-              </div>
-            </div>
-          </dialog>
-        </section>
+        <Alerts />
         <div id="taskContainer" className="taskDiv">
           <TaskList />
         </div>
