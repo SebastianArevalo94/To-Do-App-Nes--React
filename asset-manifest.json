@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/To-Do-App-Nes--React/static/css/main.96a19107.css",
-    "main.js": "/To-Do-App-Nes--React/static/js/main.26d595e9.js",
+    "main.js": "/To-Do-App-Nes--React/static/js/main.28b7c647.js",
     "static/media/click.mp3": "/To-Do-App-Nes--React/static/media/click.4cb6290529156919c341.mp3",
     "static/media/language.icon.dark.svg": "/To-Do-App-Nes--React/static/media/language.icon.dark.0a82248ee12351e724f2aa37b8e3edf0.svg",
     "static/media/language.icon.light.svg": "/To-Do-App-Nes--React/static/media/language.icon.light.58bf8cbc0912eac233d45c4506c71450.svg",
@@ -11,10 +11,10 @@
     "static/media/delete.icon.light.svg": "/To-Do-App-Nes--React/static/media/delete.icon.light.eaa6d205a0569a9f0e7dda69b64a8f04.svg",
     "index.html": "/To-Do-App-Nes--React/index.html",
     "main.96a19107.css.map": "/To-Do-App-Nes--React/static/css/main.96a19107.css.map",
-    "main.26d595e9.js.map": "/To-Do-App-Nes--React/static/js/main.26d595e9.js.map"
+    "main.28b7c647.js.map": "/To-Do-App-Nes--React/static/js/main.28b7c647.js.map"
   },
   "entrypoints": [
     "static/css/main.96a19107.css",
-    "static/js/main.26d595e9.js"
+    "static/js/main.28b7c647.js"
   ]
 }
