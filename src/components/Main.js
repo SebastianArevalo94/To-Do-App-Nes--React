@@ -7,11 +7,19 @@ import click from "../assets/sounds/click.mp3";
 import { getLSData, cleanLS } from "../helpers/localStorage";
 import sun from "../assets/icons/sun-symbol.png";
 import moon from "../assets/icons/moon-symbol.png";
+import editIconDark from "../assets/icons/edit.icon.dark.svg";
+import editIconLight from "../assets/icons/edit.icon.light.svg";
+import deleteIconLight from "../assets/icons/delete.icon.light.svg";
+import deleteIconDark from "../assets/icons/delete.icon.dark.svg";
+import languageIconLight from "../assets/icons/language.icon.light.svg";
+import languageIconDark from "../assets/icons/language.icon.dark.svg";
+import { English, Spanish } from "../languages/languages";
 
 const Main = () => {
   const [taskId, setTaskId] = useState(1);
   const dispatch = useDispatch();
   const tasks = useSelector((state) => state.tasks);
+  const [languageData, setLanguageData] = useState({});
   const [fixHeight, setFixHeight] = useState(0);
   const [initialHeight, setInitialHeight] = useState();
   const [btnDisabled, setBtnDisabled] = useState(true);
@@ -19,8 +27,15 @@ const Main = () => {
   const [errorInfo, setErrorInfo] = useState("");
 
   useEffect(() => {
-    let theme = localStorage.getItem("theme");
-    let body = document.querySelector("#body");
+    const theme = localStorage.getItem("theme");
+    const languageLS = localStorage.getItem("language");
+    if (!languageLS || languageLS === "english") {
+      localStorage.setItem("language", "english");
+      setLanguageData(English);
+    } else {
+      setLanguageData(Spanish);
+    }
+    const body = document.querySelector("#body");
     body.style.height = `${document.documentElement.scrollHeight}px`;
     setInitialHeight(`${document.documentElement.scrollHeight}px`);
     dispatch(setTasksLS(getLSData()));
@@ -102,18 +117,19 @@ const Main = () => {
     setBtnDisabled(true);
   };
   const setTheme = (theme) => {
-    let body = document.querySelector("#body");
-    let titleApp = document.querySelector("#titleApp");
-    let addTaskContainer = document.querySelector("#addTaskContainer");
-    let label = document.querySelector("#taskLabel");
-    let input = document.querySelector("#taskInput");
-    let taskFilter = document.querySelector("#taskFilter");
-    let allTasks = document.querySelector("#allTasks");
-    let icon = document.querySelector("#themeImg");
-
+    const body = document.querySelector("#body");
+    const titleApp = document.querySelector("#titleApp");
+    const addTaskContainer = document.querySelector("#addTaskContainer");
+    const label = document.querySelector("#taskLabel");
+    const input = document.querySelector("#taskInput");
+    const taskFilter = document.querySelector("#taskFilter");
+    const allTasks = document.querySelector("#allTasks");
+    const icon = document.querySelector("#themeImg");
+    const languageIcon = document.querySelector("#languageIcon");
     if (theme === "dark") {
       localStorage.setItem("theme", theme);
-      icon.src = sun
+      icon.src = sun;
+      languageIcon.src = languageIconDark;
       body.className = "darkBody";
       titleApp.className = "titleAppDark";
       addTaskContainer.className = "addTask nes-container dark addTaskDark";
@@ -122,10 +138,10 @@ const Main = () => {
       input.className = "nes-input is-dark";
       label.style.color = "#fff";
       if (tasks.length !== 0) {
-        let taskList = document.querySelectorAll(".onlyTask");
-        let arrayTaskList = Array.from(taskList);
-        let checkList = document.querySelectorAll(".onlyCheck");
-        let arrayCheckList = Array.from(checkList);
+        const taskList = document.querySelectorAll(".onlyTask");
+        const arrayTaskList = Array.from(taskList);
+        const checkList = document.querySelectorAll(".onlyCheck");
+        const arrayCheckList = Array.from(checkList);
         arrayTaskList.forEach((task) => {
           task.className = "onlyTask nes-container with-title is-dark";
         });
@@ -137,6 +153,7 @@ const Main = () => {
       body.className = "lightBody";
       localStorage.setItem("theme", "light");
       icon.src = moon;
+      languageIcon.src = languageIconLight;
       body.className = "lightBody";
       titleApp.className = "titleAppLight";
       addTaskContainer.className = "addTask nes-container";
@@ -145,10 +162,10 @@ const Main = () => {
       input.className = "nes-input";
       label.style.color = "#000";
       if (tasks.length !== 0) {
-        let taskList = document.querySelectorAll(".onlyTask");
-        let arrayTaskList = Array.from(taskList);
-        let checkList = document.querySelectorAll(".onlyCheck");
-        let arrayCheckList = Array.from(checkList);
+        const taskList = document.querySelectorAll(".onlyTask");
+        const arrayTaskList = Array.from(taskList);
+        const checkList = document.querySelectorAll(".onlyCheck");
+        const arrayCheckList = Array.from(checkList);
         arrayTaskList.forEach((task) => {
           task.className = "onlyTask nes-container with-title";
         });
@@ -158,17 +175,21 @@ const Main = () => {
       }
     }
   };
-
   const changeTheme = () => {
-    let body = document.querySelector("#body");
-    let titleApp = document.querySelector("#titleApp");
-    let addTaskContainer = document.querySelector("#addTaskContainer");
-    let label = document.querySelector("#taskLabel");
-    let input = document.querySelector("#taskInput");
-    let taskFilter = document.querySelector("#taskFilter");
-    let alertDeleteAll = document.querySelector("#delete-all");
-    let icon = document.querySelector("#themeImg");
-    let icons = {
+    const body = document.querySelector("#body");
+    const titleApp = document.querySelector("#titleApp");
+    const addTaskContainer = document.querySelector("#addTaskContainer");
+    const label = document.querySelector("#taskLabel");
+    const input = document.querySelector("#taskInput");
+    const taskFilter = document.querySelector("#taskFilter");
+    const alertDeleteAll = document.querySelector("#delete-all");
+    const icon = document.querySelector("#themeImg");
+    const languageIcon = document.querySelector("#languageIcon");
+    const editIcons = document.querySelectorAll(".editIcon");
+    const deleteIcons = document.querySelectorAll(".deleteIcon");
+    const editIconsArray = Array.from(editIcons);
+    const deleteIconsArray = Array.from(deleteIcons);
+    const icons = {
       moon: "https://img.icons8.com/ios-glyphs/60/000000/moon-symbol.png",
       sun: "https://img.icons8.com/ios-glyphs/60/ffffff/sun--v1.png",
     };
@@ -176,6 +197,14 @@ const Main = () => {
     if (body.className === "lightBody") {
       localStorage.setItem("theme", "dark");
       icon.src = icons.sun;
+      languageIcon.src = languageIconDark;
+      editIconsArray.forEach((icon) => {
+        // console.log(icon)
+        icon.src = editIconDark;
+      });
+      deleteIconsArray.forEach((icon) => {
+        icon.src = deleteIconDark;
+      });
       body.className = "darkBody";
       titleApp.className = "titleAppDark";
       addTaskContainer.className = "addTask nes-container dark addTaskDark";
@@ -199,14 +228,18 @@ const Main = () => {
       body.className = "lightBody";
       localStorage.setItem("theme", "light");
       icon.src = icons.moon;
+      languageIcon.src = languageIconLight;
+      editIconsArray.forEach((icon) => {
+        icon.src = editIconLight;
+      });
+      deleteIconsArray.forEach((icon) => {
+        icon.src = deleteIconLight;
+      });
       body.className = "lightBody";
       titleApp.className = "titleAppLight";
       addTaskContainer.className = "addTask nes-container";
       taskFilter.className = "taskFilter";
       alertDeleteAll.className = "nes-dialog alert";
-      // allTasks.className = 'allTasks active'; }
-      // doneTasks.className = 'doneTasks active'; }
-      // undoneTasks.className = 'undoneTasks active'; }
       input.className = "nes-input";
       label.style.color = "#000";
       if (tasks.length !== 0) {
@@ -221,6 +254,15 @@ const Main = () => {
           check.className = "onlyCheck nes-checkbox";
         });
       }
+    }
+  };
+  const changeLanguage = (currentLanguage) => {
+    if (currentLanguage === "english") {
+      localStorage.setItem("language", "spanish");
+      setLanguageData(Spanish);
+    } else {
+      localStorage.setItem("language", "english");
+      setLanguageData(English);
     }
   };
   const Alerts = () => {
@@ -238,14 +280,14 @@ const Main = () => {
             <div method="dialog">
               <p className="nes-text is-warning">
                 {tasks.tasks.length > 1
-                  ? "¿Quieres elminar todas las tareas?"
-                  : "¿Quieres eliminar la tarea?"}
+                  ? languageData.confirmDeleteAll
+                  : languageData.confirmDeleteOne}
               </p>
               <div className="edit-container nes-field">
                 <label className="textCenter" htmlFor="name_field">
                   {tasks.tasks.length > 1
-                    ? `Se eliminaran las ${tasks.tasks.length} tareas!`
-                    : `Se eliminara la tarea!`}
+                    ? languageData.confirmDeleteAllInfo
+                    : languageData.confirmDeleteOneSub}
                 </label>
                 <menu className="dialog-menu edit-btn">
                   <button
@@ -254,7 +296,7 @@ const Main = () => {
                     className="nes-btn is-success"
                     onClick={clean}
                   >
-                    Eliminar
+                    {languageData.deleteButton}
                   </button>
                   <button
                     onMouseDown={playClick}
@@ -262,7 +304,7 @@ const Main = () => {
                     type="button"
                     className="nes-btn is-error"
                   >
-                    Cancelar
+                    {languageData.cancelButton}
                   </button>
                 </menu>
               </div>
@@ -279,13 +321,25 @@ const Main = () => {
           <h1 id="titleApp" className="titleAppLight">
             To Do List
           </h1>
-          <div onMouseDown={changeTheme} className="changeTheme">
+          <div className="changeTheme">
             <img
               id="themeImg"
-              onMouseDown={playClick}
+              onMouseDown={() => {
+                playClick();
+                changeTheme();
+              }}
               alt="iconTheme"
               className="themeImg"
-              src="https://img.icons8.com/ios-glyphs/60/000000/moon-symbol.png"
+              src={moon}
+            />
+            <img
+              id="languageIcon"
+              alt="languageIcon"
+              className="themeImg"
+              src={languageIconLight}
+              onClick={() => {
+                changeLanguage(localStorage.getItem("language"));
+              }}
             />
           </div>
         </div>
@@ -293,7 +347,7 @@ const Main = () => {
           <form onSubmit={handleSubmit}>
             <div className="nes-field">
               <label id="taskLabel" htmlFor="taskInput">
-                Tarea
+                {languageData.labelInput}
               </label>
               <input
                 name="name"
@@ -322,7 +376,7 @@ const Main = () => {
                     : "addBtn nes-btn is-success"
                 }
               >
-                Agregar
+                {languageData.addTask}
               </button>
               <button
                 type="button"
@@ -342,7 +396,7 @@ const Main = () => {
                     : "cleanBtn nes-btn is-error"
                 }
               >
-                Limpiar
+                {languageData.cleanTasks}
               </button>
             </div>
           </form>

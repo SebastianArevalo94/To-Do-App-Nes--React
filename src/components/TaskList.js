@@ -3,10 +3,16 @@ import { useState, useEffect } from "react";
 import { checkTask } from "../redux/taskSlice";
 import click from "../assets/sounds/click.mp3";
 import { editTask, deleteTask } from "../redux/taskSlice";
+import editIconDark from "../assets/icons/edit.icon.dark.svg";
+import editIconLight from "../assets/icons/edit.icon.light.svg";
+import deleteIconLight from "../assets/icons/delete.icon.light.svg";
+import deleteIconDark from "../assets/icons/delete.icon.dark.svg";
+import { English, Spanish } from "../languages/languages";
 
 const TaskList = () => {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.tasks);
+  const [languageData, setLanguageData] = useState({});
   const [filterState, setFilterState] = useState(null);
   const [task, setTask] = useState({
     name: "",
@@ -52,7 +58,14 @@ const TaskList = () => {
     clickSound.play();
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const theme = localStorage.getItem("theme");
+    const language =
+      localStorage.getItem("language") === "english" ? English : Spanish;
+    setIconsTheme(theme);
+    setLanguageData(language);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [localStorage.getItem('language')]);
 
   const handleEdit = (id) => {
     document.getElementById("edit-task-modal").showModal();
@@ -98,26 +111,48 @@ const TaskList = () => {
     }
   };
 
+  const setIconsTheme = (theme) => {
+    const editIcons = document.querySelectorAll(".editIcon");
+    const editIconsArray = Array.from(editIcons);
+    const deleteIcons = document.querySelectorAll(".deleteIcon");
+    const deleteIconsArray = Array.from(deleteIcons);
+    if (theme === "dark") {
+      editIconsArray.forEach((icon) => {
+        icon.src = editIconDark;
+      });
+      deleteIconsArray.forEach((icon) => {
+        icon.src = deleteIconDark;
+      });
+    } else {
+      editIconsArray.forEach((icon) => {
+        icon.src = editIconLight;
+      });
+      deleteIconsArray.forEach((icon) => {
+        icon.src = deleteIconLight;
+      });
+    }
+  };
+
   const TaskDiv = ({ task, index }) => {
-    let themeIsLight = localStorage.getItem("theme") === "light" ? true : false;
+    const lsTheme = localStorage.getItem("theme");
     return (
       <div
         key={index}
         id="onlyTask"
         className={
-          themeIsLight
+          lsTheme === "light"
             ? "onlyTask nes-container with-title"
             : "onlyTask nes-container with-title is-dark"
         }
       >
-        <p className="title">Tarea {task.id}</p>
+        <p className="title">{languageData.taskNumber} {task.id}</p>
         <label>
           <input
             name="done"
             id="checkTask1"
             type="checkbox"
             className={
-              themeIsLight
+              lsTheme === "light"
                 ? "onlyCheck nes-checkbox"
                 : "onlyCheck nes-checkbox is-dark"
             }
@@ -128,13 +163,21 @@ const TaskList = () => {
         </label>
         <div className="taskActions">
           <img
-            src="https://img.icons8.com/material-sharp/28/0082C7/edit--v1.png"
+            id="editIcon"
+            src={lsTheme === "light" ? editIconLight : editIconDark}
+            className="taskBtn editIcon"
             onClick={() => handleEdit(task.id)}
+            width="24px"
+            height="24px"
             alt="Edit Icon"
           />
           <img
-            src="https://img.icons8.com/material-sharp/28/DE0000/trash.png"
+            id="deleteIcon"
+            src={lsTheme === "light" ? deleteIconLight : deleteIconDark}
+            className="deleteIcon"
             onClick={() => showConfirmDelete(task.id)}
+            width="24px"
+            height="24px"
             alt="Delete Icon"
           />
         </div>
@@ -174,7 +217,7 @@ const TaskList = () => {
             }
           }}
         >
-          Todas
+          {languageData.allTasks}
         </div>
         <div
           id="doneTasks"
@@ -186,7 +229,7 @@ const TaskList = () => {
             }
           }}
         >
-          Hechas
+          {languageData.completeTasks}
         </div>
         <div
           id="undoneTasks"
@@ -198,7 +241,7 @@ const TaskList = () => {
             }
           }}
         >
-          Sin hacer
+          {languageData.incompleteTasks}
         </div>
       </div>
       <div className="taskList">
@@ -213,10 +256,10 @@ const TaskList = () => {
             id="edit-task-modal"
           >
             <div method="dialog">
-              <p className="nes-text is-primary">Editar Tarea</p>
+              <p className="nes-text is-primary">{languageData.editTaskTitle}</p>
               <form onSubmit={handleSubmit}>
                 <div className="edit-container nes-field">
-                  <label htmlFor="name_field">Nombre de la tarea</label>
+                  <label htmlFor="name_field">{languageData.editTaskLabel}</label>
                   <input
                     name="name"
                     onChange={handleInputChange}
@@ -231,7 +274,7 @@ const TaskList = () => {
                       type="submit"
                       className="nes-btn is-warning"
                     >
-                      Editar
+                      {languageData.editButton}
                     </button>
                     <button
                       onMouseDown={playClick}
@@ -239,7 +282,7 @@ const TaskList = () => {
                       type="button"
                       className="nes-btn is-error"
                     >
-                      Cancelar
+                      {languageData.cancelButton}
                     </button>
                   </menu>
                 </div>
@@ -258,11 +301,11 @@ const TaskList = () => {
           >
             <div method="dialog">
               <p className="nes-text is-warning textCenter">
-                ¿Quieres eliminar esta tarea?
+                {languageData.deleteAllOneTasksTitle}
               </p>
               <div className="edit-container nes-field">
                 <label htmlFor="name_field">
-                  "{task.name}" agregada a las {task.time}
+                  "{task.name}" {languageData.deleteOneTaskSubtitle} {task.time}
                 </label>
                 <menu className="dialog-menu edit-btn">
                   <button
@@ -271,7 +314,7 @@ const TaskList = () => {
                     className="nes-btn is-success"
                     onClick={handleConfirmDelete}
                   >
-                    Eliminar
+                    {languageData.deleteButton}
                   </button>
                   <button
                     onMouseDown={playClick}
@@ -279,7 +322,7 @@ const TaskList = () => {
                     type="button"
                     className="nes-btn is-error"
                   >
-                    Cancelar
+                    {languageData.cancelButton}
                   </button>
                 </menu>
               </div>
