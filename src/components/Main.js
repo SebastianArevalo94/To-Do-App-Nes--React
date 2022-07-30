@@ -85,11 +85,11 @@ const Main = () => {
     if (e.target.value === "") {
       setBtnDisabled(true);
       text.style.display = "block";
-      setErrorInfo("Escribe una tarea.");
+      setErrorInfo(languageData.emptyInput);
     } else if (e.target.value.length < 4) {
       setBtnDisabled(true);
       text.style.display = "block";
-      setErrorInfo("Escribe minimo 4 letras.");
+      setErrorInfo(languageData.minLength);
     } else {
       text.style.display = "none";
       setBtnDisabled(false);
@@ -189,17 +189,12 @@ const Main = () => {
     const deleteIcons = document.querySelectorAll(".deleteIcon");
     const editIconsArray = Array.from(editIcons);
     const deleteIconsArray = Array.from(deleteIcons);
-    const icons = {
-      moon: "https://img.icons8.com/ios-glyphs/60/000000/moon-symbol.png",
-      sun: "https://img.icons8.com/ios-glyphs/60/ffffff/sun--v1.png",
-    };
-    //blanco a negro */}
+
     if (body.className === "lightBody") {
       localStorage.setItem("theme", "dark");
-      icon.src = icons.sun;
+      icon.src = sun;
       languageIcon.src = languageIconDark;
       editIconsArray.forEach((icon) => {
-        // console.log(icon)
         icon.src = editIconDark;
       });
       deleteIconsArray.forEach((icon) => {
@@ -227,7 +222,7 @@ const Main = () => {
     } else {
       body.className = "lightBody";
       localStorage.setItem("theme", "light");
-      icon.src = icons.moon;
+      icon.src = moon;
       languageIcon.src = languageIconLight;
       editIconsArray.forEach((icon) => {
         icon.src = editIconLight;
@@ -256,12 +251,25 @@ const Main = () => {
       }
     }
   };
+  const typeErrorTranslate = (typeError) => {
+    if(typeError === "Type at least 4 letters."){
+      return "Escribe minimo 4 letras."
+    } else if (typeError === "Escribe minimo 4 letras.") {
+      return "Type at least 4 letters."
+    } else if(typeError === "Type a task."){
+      return "Escribe una tarea."
+    } else if (typeError === "Escribe una tarea."){
+      return "Type a task"
+    }
+  }
   const changeLanguage = (currentLanguage) => {
     if (currentLanguage === "english") {
       localStorage.setItem("language", "spanish");
+      setErrorInfo(typeErrorTranslate(errorInfo));
       setLanguageData(Spanish);
     } else {
       localStorage.setItem("language", "english");
+      setErrorInfo(typeErrorTranslate(errorInfo));
       setLanguageData(English);
     }
   };

@@ -16,7 +16,9 @@ export const English = {
     deleteOneTaskTitle: "Do you want to delete this task?",
     deleteOneTaskSubtitle: "added at",
     editTaskTitle: "Edit Task",
-    editTaskLabel: "Task Name"
+    editTaskLabel: "Task Name",
+    minLength: "Type at least 4 letters.",
+    emptyInput: "Type a task."
 };
 
 export const Spanish = {
@@ -37,5 +39,7 @@ export const Spanish = {
     deleteOneTaskTitle: "¿Quieres eliminar esta tarea",
     deleteOneTaskSubtitle: "agregada a las",
     editTaskTitle: "Editar Tarea",
-    editTaskLabel: "Nombre de la tarea"
+    editTaskLabel: "Nombre de la tarea",
+    minLength: "Escribe minimo 4 letras.",
+    emptyInput: "Escribe una tarea."
 };

@@ -54,7 +54,6 @@ const TaskList = () => {
 
   const playClick = () => {
     let clickSound = new Audio(click);
-    // clickSound.loop = true;
     clickSound.play();
   };
 
