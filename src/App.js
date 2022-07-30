@@ -1,15 +1,9 @@
 import Main from "./components/Main";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import "./styles/Main.css";
 
-function App() {
+const App = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Main />} />
-      </Routes>
-    </BrowserRouter>
-  );
+    <Main/>
+  )
 }
 
-export default App;
+export default App

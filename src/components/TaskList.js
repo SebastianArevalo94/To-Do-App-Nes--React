@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
-import { checkTask } from "../redux/taskSlice";
+import { checkTask, resetCounter } from "../redux/taskSlice";
 import click from "../assets/sounds/click.mp3";
 import { editTask, deleteTask } from "../redux/taskSlice";
 import editIconDark from "../assets/icons/edit.icon.dark.svg";
@@ -32,6 +32,7 @@ const TaskList = () => {
   const handleConfirmDelete = () => {
     dispatch(deleteTask(task.id));
     document.getElementById("confirm-delete").close();
+    dispatch(resetCounter(state.tasks));
   };
 
   const handleCancelDelete = () => {
@@ -64,7 +65,7 @@ const TaskList = () => {
     setIconsTheme(theme);
     setLanguageData(language);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [localStorage.getItem('language')]);
+  }, [localStorage.getItem("language")]);
 
   const handleEdit = (id) => {
     document.getElementById("edit-task-modal").showModal();
@@ -144,7 +145,9 @@ const TaskList = () => {
             : "onlyTask nes-container with-title is-dark"
         }
       >
-        <p className="title">{languageData.taskNumber} {task.id}</p>
+        <p className="title">
+          {languageData.taskNumber} {task.id}
+        </p>
         <label>
           <input
             name="done"
@@ -255,10 +258,14 @@ const TaskList = () => {
             id="edit-task-modal"
           >
             <div method="dialog">
-              <p className="nes-text is-primary">{languageData.editTaskTitle}</p>
+              <p className="nes-text is-primary">
+                {languageData.editTaskTitle}
+              </p>
               <form onSubmit={handleSubmit}>
                 <div className="edit-container nes-field">
-                  <label htmlFor="name_field">{languageData.editTaskLabel}</label>
+                  <label htmlFor="name_field">
+                    {languageData.editTaskLabel}
+                  </label>
                   <input
                     name="name"
                     onChange={handleInputChange}
@@ -300,7 +307,7 @@ const TaskList = () => {
           >
             <div method="dialog">
               <p className="nes-text is-warning textCenter">
-                {languageData.deleteAllOneTasksTitle}
+                {languageData.deleteOneTaskTitle}
               </p>
               <div className="edit-container nes-field">
                 <label htmlFor="name_field">

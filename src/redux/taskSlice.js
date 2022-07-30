@@ -46,6 +46,17 @@ export const taskSlice = createSlice({
     setTasksLS: (state, action) => {
       state.tasks = action.payload;
     },
+    resetCounter: (state, action) => {
+      let newId = 1;
+      action.payload.forEach((task) => {
+        const currentId = task.id;
+        const taskFind = state.tasks.find((task) => task.id === currentId);
+        if (taskFind) {
+          taskFind.id = newId;
+          newId++;
+        }
+      });
+    },
   },
 });
 
@@ -56,6 +67,7 @@ export const {
   editTask,
   deleteTask,
   setTasksLS,
+  resetCounter,
 } = taskSlice.actions;
 
 export default taskSlice.reducer;

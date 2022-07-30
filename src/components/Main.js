@@ -14,6 +14,7 @@ import deleteIconDark from "../assets/icons/delete.icon.dark.svg";
 import languageIconLight from "../assets/icons/language.icon.light.svg";
 import languageIconDark from "../assets/icons/language.icon.dark.svg";
 import { English, Spanish } from "../languages/languages";
+import "../styles/Main.css"
 
 const Main = () => {
   const [taskId, setTaskId] = useState(1);
@@ -134,7 +135,7 @@ const Main = () => {
       titleApp.className = "titleAppDark";
       addTaskContainer.className = "addTask nes-container dark addTaskDark";
       taskFilter.className = "taskFilterDark";
-      allTasks.className = "allTasks active";
+      allTasks.className = "allTasks activeDark";
       input.className = "nes-input is-dark";
       label.style.color = "#fff";
       if (tasks.length !== 0) {
@@ -158,7 +159,7 @@ const Main = () => {
       titleApp.className = "titleAppLight";
       addTaskContainer.className = "addTask nes-container";
       taskFilter.className = "taskFilter";
-      allTasks.className = "allTasks activeDark";
+      allTasks.className = "allTasks active";
       input.className = "nes-input";
       label.style.color = "#000";
       if (tasks.length !== 0) {
