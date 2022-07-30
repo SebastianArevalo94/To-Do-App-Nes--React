@@ -1,14 +1,20 @@
 {
   "files": {
-    "main.css": "/To-Do-App-Nes--React/static/css/main.d859f466.css",
-    "main.js": "/To-Do-App-Nes--React/static/js/main.a59c2431.js",
+    "main.css": "/To-Do-App-Nes--React/static/css/main.96a19107.css",
+    "main.js": "/To-Do-App-Nes--React/static/js/main.26d595e9.js",
     "static/media/click.mp3": "/To-Do-App-Nes--React/static/media/click.4cb6290529156919c341.mp3",
+    "static/media/language.icon.dark.svg": "/To-Do-App-Nes--React/static/media/language.icon.dark.0a82248ee12351e724f2aa37b8e3edf0.svg",
+    "static/media/language.icon.light.svg": "/To-Do-App-Nes--React/static/media/language.icon.light.58bf8cbc0912eac233d45c4506c71450.svg",
+    "static/media/edit.icon.dark.svg": "/To-Do-App-Nes--React/static/media/edit.icon.dark.ce9fe25d69821d3d38e5150a5e8bf459.svg",
+    "static/media/edit.icon.light.svg": "/To-Do-App-Nes--React/static/media/edit.icon.light.70caa820a37ac43c020bb51f669582ba.svg",
+    "static/media/delete.icon.dark.svg": "/To-Do-App-Nes--React/static/media/delete.icon.dark.60422ae80e82969ad350d60e0c7b2969.svg",
+    "static/media/delete.icon.light.svg": "/To-Do-App-Nes--React/static/media/delete.icon.light.eaa6d205a0569a9f0e7dda69b64a8f04.svg",
     "index.html": "/To-Do-App-Nes--React/index.html",
-    "main.d859f466.css.map": "/To-Do-App-Nes--React/static/css/main.d859f466.css.map",
-    "main.a59c2431.js.map": "/To-Do-App-Nes--React/static/js/main.a59c2431.js.map"
+    "main.96a19107.css.map": "/To-Do-App-Nes--React/static/css/main.96a19107.css.map",
+    "main.26d595e9.js.map": "/To-Do-App-Nes--React/static/js/main.26d595e9.js.map"
   },
   "entrypoints": [
-    "static/css/main.d859f466.css",
-    "static/js/main.a59c2431.js"
+    "static/css/main.96a19107.css",
+    "static/js/main.26d595e9.js"
   ]
 }
